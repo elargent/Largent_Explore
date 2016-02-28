@@ -1,0 +1,99 @@
+# ------------------------------------------------------------- #
+# ------------------- Homework #6 - Part II ------------------- #
+# ------------------------------------------------------------- #
+  
+require(ggplot2)
+require(grid)
+
+# 1) This function, problem1, takes a data.frame and returns a data.frame. 
+# The new data.frame contains only columns that are composed of "integer" 
+# or "numeric" type variables. 
+
+problem1 <- function(indf){
+  count <- 1;
+  outdf = indf[1]
+  for (i in 1:length(indf)) {
+    if (any(class(indf[[i]]) == "numeric" | class(indf[[i]]) == "integer")) {
+      outdf[count] <- indf[i]
+      count <- count + 1
+    }
+  }
+  if (count == 1) {
+    outdf <- data.frame()
+  }
+  return(outdf)
+}
+
+# 2) This function, problem2, takes a data.frame and returns a data.frame. 
+# The first part is the same as the code used in problem 1. The second part 
+# identifies all the combinations of variables - these are listed in column 
+# 1 - and the Pearson correlation between the variables - these are listed 
+# in column 2. 
+
+problem2 <- function(indf){
+  count <- 1;
+  outdf = indf[1]
+  for (i in 1:length(indf)) {
+    if (any(class(indf[[i]]) == "numeric" | class(indf[[i]]) == "integer")) {
+      outdf[count] <- indf[i]
+      count <- count + 1
+    }
+  }
+  if (count == 1) {
+    outdf <- data.frame()
+  }
+  
+  # Create all possible combinations of vectors in outdf 
+  tempV = c();
+  for(i in 1:(length(outdf)-1)) {
+    for(j in (i+1):length(outdf)) {
+      temp1 <- paste(colnames(outdf[i]),colnames(outdf[j]),sep="-")
+      temp2 <- cor(outdf[i],outdf[j], method="pearson")
+      tempV = rbind(tempV,c(temp1,temp2))
+    }
+  }
+  outdf <- data.frame(tempV)
+  colnames(outdf) <- c("Variables","Pearson_Corr")
+  return(outdf)
+}
+
+# 3) Finally, the last problem. This function, problem3, takes a data.frame 
+# and then creates scatterplots of all possible combinations of the numeric 
+# data included in the given data.frame. This code leverages the code used 
+# in problems 1 and 2. The scatterplots have a title that gives the names of 
+# the two variables and the corresponding Pearson coefficient. 
+
+problem3 <- function(indf){
+  count <- 1;
+  outdf = indf[1]
+  for (i in 1:length(indf)) {
+    if (any(class(indf[[i]]) == "numeric" | class(indf[[i]]) == "integer")) {
+      outdf[count] <- indf[i]
+      count <- count + 1
+    }
+  }
+  if (count == 1) {
+    outdf <- data.frame()
+  }
+  
+  # Create all possible combinations of vectors in outdf 
+  tempV = c();
+  for(i in 1:(length(outdf)-1)) {
+    for(j in (i+1):length(outdf)) {
+      temp1 <- paste(colnames(outdf[i]),colnames(outdf[j]),sep="-")
+      temp2 <- cor(outdf[i],outdf[j], method="pearson")
+      tempV = rbind(tempV,c(temp1,temp2))
+      # Create scatters using the combinations of vectors in outdf
+      scatter_plot <- ggplot(outdf, aes(x=outdf[[i]],y=outdf[[j]]))
+      scatter_plot <- scatter_plot + geom_point()
+      scatter_plot <- scatter_plot + labs(x=colnames(outdf[i]), y=colnames(outdf[j]),
+                                          title = paste(temp1, temp2, sep = ": "))
+      print(scatter_plot)
+    }
+  }
+}
+
+# ------------------------------------------------------------- #
+# ------------------------------------------------------------- #
+# ------------------------------------------------------------- #
+
