@@ -2,6 +2,8 @@
 # ------------------- Homework #7 ------------------- #
 # --------------------------------------------------- #
 
+##Prof G: Nice work!
+
 require(ggplot2)
 require(grid)
 
@@ -179,3 +181,6 @@ new_diamonds$vs <- as.logical(rep_len(mtcars$vs, nrow(new_diamonds)))
 
 test1 <- explore(new_diamonds,c(5,20,50),.25)
 test2 <- explore(mtcars,c(5,20,50),.25)
+
+for (i in 1:length(test1)) {print(test1[i])}
+for (i in 1:length(test2)) {print(test2[i])}
