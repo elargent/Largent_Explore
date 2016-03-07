@@ -3,6 +3,9 @@ title: "Largent_HW6_Part2"
 output: html_document
 ---
 
+Nice work! Try to give your functions more descriptive names. You can use comments
+to let me know which problem you are solving.
+
 ```{r}
 require(ggplot2)
 require(grid)
